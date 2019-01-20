@@ -1,4 +1,4 @@
-ARG NODE_VERSION=6
+ARG NODE_VERSION=lts
 FROM node:${NODE_VERSION}
 
 # Home directory for Node-RED application source code.
@@ -10,7 +10,8 @@ RUN mkdir /data
 WORKDIR /usr/src/node-red
 
 # Add node-red user so we aren't running as root.
-RUN useradd --home-dir /usr/src/node-red --no-create-home node-red \
+RUN groupadd --system --gid 1880 node-red
+RUN useradd --system --uid 1880 --gid node-red --home-dir /usr/src/node-red --no-create-home node-red \
     && chown -R node-red:node-red /data \
     && chown -R node-red:node-red /usr/src/node-red
 
